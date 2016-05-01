@@ -1,26 +1,23 @@
+import logging
 from collections import defaultdict
 
-from numpy import exp, sum, product, argmax, unique, zeros, ones, abs
+from numpy import exp, sum, argmax, unique, zeros, ones, abs, log
 
 
 class MaxEntModel(object):
-    def __init__(self, encoder, type='dual'):
+    def __init__(self, encoder):
         self.encoder = encoder
         self.classes = None
-        self.type = type
 
         self.w = None
-        self.feat_map = None
-        self.feat_counts = None
-        self.data_counts = None
         self.c = None
         self.n = None
 
     def prob(self, x, y):
-        if self.type == 'primal':
-            return product([self.w[i] ** val for i, val in self.encoder(x, y)])
-        elif self.type == 'dual':
-            return exp(sum([self.w[i] * val for i, val in self.encoder(x, y)]))
+        f = self.encoder(x, y)
+        f += [(len(self.encoder), self.c - sum([e[1] for e in f]))]
+
+        return exp(sum([self.w[i] * val for i, val in f]))
 
     def predict_prob(self, x, normalize=True):
         probs = [self.prob(x, cl) for cl in self.classes]
@@ -34,66 +31,64 @@ class MaxEntModel(object):
         return self.classes[argmax(self.predict_prob(x, normalize=False))]
 
     def prob_f(self, f):
-        if self.type == 'primal':
-            return product([self.w[i] ** val for i, val in f])
-        elif self.type == 'dual':
-            return exp(sum([self.w[i] * val for i, val in f]))
+        return exp(sum([self.w[i] * val for i, val in f]))
 
-    def fit(self, X, y, iterations=100):
+    def fit(self, X, y, iterations=100, tol=.0001):
         self.classes = unique(y)
-        self.feat_map = [self.encoder(x, yy) for x, yy in zip(X, y)]
-        self.data_counts = [sum([e[1] for e in f]) for f in self.feat_map]
+        data_counts = [sum([e[1] for e in f]) for f
+                       in [self.encoder(x, yy) for x, yy in zip(X, y)]]
 
-        self.c = max(self.data_counts)
+        self.c = max(data_counts)
         self.n = float(len(X))
-
-        [f.append((len(self.encoder), self.c - self.data_counts[i])) for i, f in enumerate(self.feat_map)]
 
         self.w = ones(len(self.encoder) + 1)
 
-        self.feat_counts = zeros(len(self.encoder) + 1)
+        feat_cache, feat_counts = self._create_feature_cache(X, y)
 
-        for f in self.feat_map:
-            for i, val in f:
-                self.feat_counts[i] += val
+        epf_emp = feat_counts
 
-        epf_emp = self.feat_counts + 1
+        it = 0
 
-        # print epf_emp
-
-        feat_cache = defaultdict(int)
-
-        for i in range(len(X)):
-            for j in range(len(self.classes)):
-                f = self.encoder(X[i], self.classes[j])
-                f += [(len(self.encoder), self.c - sum([e[1] for e in f]))]
-
-                feat_cache[(i, j)] = f
-
-        # print feat_cache.items()
-
-        for _ in range(iterations):
-            epf_est = ones(len(self.encoder) + 1)
+        for it in range(iterations):
+            epf_est = zeros(len(self.encoder) + 1)
 
             for i in range(len(X)):
                 f = [feat_cache[(i, j)] for j in range(len(self.classes))]
                 p = [self.prob_f(ff) for ff in f]
-                p = p /sum(p)
+                p = p / sum(p)
 
                 for j in range(len(self.classes)):
                     for k, val in feat_cache[(i, j)]:
                         epf_est[k] += p[j] * val
 
-            # print epf_est
+            new_w = self.w + (1./self.c)*(log(epf_emp) - log(epf_est))
 
-            new_w = self.w * (epf_emp / epf_est) ** (1./self.c)
-
-            if max(abs(new_w - self.w)) < .0001:
+            if max(abs(new_w - self.w)) < tol:
                 self.w = new_w
                 break
 
             self.w = new_w
 
-            # print self.w
+        logging.info("Training finished in %d iterations ..." % (it + 1))
 
         return self
+
+    def _create_feature_cache(self, X, y):
+        feat_counts = zeros(len(self.encoder) + 1)
+        feat_cache = defaultdict(int)
+
+        for i in range(len(X)):
+            for j in range(len(self.classes)):
+                f = self.encoder(X[i], self.classes[j])
+
+                f += [(len(self.encoder), self.c - sum([e[1] for e in f]))]
+
+                if self.classes[j] == y[i]:
+                    for k, val in f:
+                        feat_counts[k] += val
+
+                feat_cache[(i, j)] = f
+
+        return feat_cache, feat_counts
+
+
