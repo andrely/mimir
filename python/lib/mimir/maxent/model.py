@@ -1,7 +1,7 @@
 import logging
 from collections import defaultdict
 
-from numpy import exp, sum, argmax, unique, zeros, ones, abs, array, log
+from numpy import exp, sum, argmax, unique, zeros, ones, abs, array, log, float, amax, argwhere
 
 
 def _create_feature_cache(X, y, encoder, c):
@@ -24,7 +24,7 @@ def _create_feature_cache(X, y, encoder, c):
     return feat_cache, feat_counts
 
 
-def train_iis(model, X, iterations, tol, y):
+def train_iis(model, X, y, iterations, tol):
     data_counts = [sum([e[1] for e in f]) for f
                    in [model.encoder(x, yy) for x, yy in zip(X, y)]]
     c = max(data_counts)
@@ -48,6 +48,49 @@ def train_iis(model, X, iterations, tol, y):
         new_w = model.w + (1. / c) * (lepf_emp - log(epf_est + 1))
 
         if max(abs(new_w - model.w)) < tol:
+            model.w = new_w
+            break
+
+        model.w = new_w
+
+    logging.info("Training finished in %d iterations ..." % (it + 1))
+
+    return model
+
+
+def train_gd(model, X, y, iterations, tol):
+    alpha = .1
+
+    classes = unique(y)
+    c = len(classes)
+    n = len(X)
+    p = len(model.encoder)
+
+    model.w = zeros(p)
+
+    it = 0
+
+    for it in range(iterations):
+        grad_j = zeros(p)
+
+        for i in range(n):
+            l_p = model.log_prob(X[i])
+
+            j = argwhere(classes == y[i])[0,0]
+            f = model.encoder(X[i], classes[j])
+            pred = argmax(l_p)
+
+            if pred != classes[j]:
+                for k, val in f:
+                    grad_j[k] -= exp(l_p[j])
+
+        delta = alpha*grad_j/n
+
+        print delta
+
+        new_w = model.w - delta
+
+        if amax(abs(new_w - model.w)) < tol:
             model.w = new_w
             break
 
@@ -85,10 +128,22 @@ class MaxEntModel(object):
     def prob_f(self, f):
         return exp(sum([self.w[i] * val for i, val in f]))
 
-    def fit(self, X, y, iterations=100, tol=.0001):
+    def log_prob(self, x):
+        f = [self.encoder(x, y) for y in self.classes]
+        p = array([sum([self.w[i] * val for i, val in ff]) for ff in f])
+        p = p - (max(p) + log(sum(exp(p - max(p)))))
+
+        return p
+
+    def fit(self, X, y, method='iis', iterations=100, tol=.0001):
         self.classes = unique(y)
 
-        train_iis(self, X, iterations, tol, y)
+        if method == 'iis':
+            train_iis(self, X, y, iterations, tol)
+        elif method == 'gd':
+            train_gd(self, X, y, iterations, tol)
+        else:
+            raise ValueError("Unknown training method %s ..." % method)
 
         return self
 
