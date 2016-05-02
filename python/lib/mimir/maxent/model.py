@@ -1,7 +1,7 @@
 import logging
 from collections import defaultdict
 
-from numpy import exp, sum, argmax, unique, zeros, ones, abs, log
+from numpy import exp, sum, argmax, unique, zeros, ones, abs, array, log
 
 
 class MaxEntModel(object):
@@ -45,7 +45,7 @@ class MaxEntModel(object):
 
         feat_cache, feat_counts = self._create_feature_cache(X, y)
 
-        epf_emp = feat_counts
+        lepf_emp = log(feat_counts + 1)
 
         it = 0
 
@@ -54,14 +54,14 @@ class MaxEntModel(object):
 
             for i in range(len(X)):
                 f = [feat_cache[(i, j)] for j in range(len(self.classes))]
-                p = [self.prob_f(ff) for ff in f]
-                p = p / sum(p)
+                p = array([sum([self.w[l] * val for l, val in ff]) for ff in f])
+                p = p - (max(p) + log(sum(exp(p - max(p)))))
 
                 for j in range(len(self.classes)):
                     for k, val in feat_cache[(i, j)]:
-                        epf_est[k] += p[j] * val
+                        epf_est[k] += exp(p[j])*val
 
-            new_w = self.w + (1./self.c)*(log(epf_emp) - log(epf_est))
+            new_w = self.w + (1./self.c)*(lepf_emp - log(epf_est + 1))
 
             if max(abs(new_w - self.w)) < tol:
                 self.w = new_w
@@ -90,5 +90,3 @@ class MaxEntModel(object):
                 feat_cache[(i, j)] = f
 
         return feat_cache, feat_counts
-
-
