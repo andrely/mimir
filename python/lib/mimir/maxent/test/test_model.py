@@ -1,5 +1,7 @@
-from numpy import array
+from numpy import array, hstack, ones
 from numpy.ma.testutils import assert_almost_equal, assert_equal
+from numpy.random.mtrand import seed
+from scipy.sparse import lil_matrix
 
 from mimir.maxent.feature import Encoder
 from mimir.maxent.model import MaxEntModel
@@ -18,7 +20,7 @@ def test_iis():
                       lambda x, y: f1(x, y, 1), lambda x, y: f0(x, y, 1),
                       lambda x, y: f1(x, y, 2), lambda x, y: f0(x, y, 2)]
     enc = Encoder(*inner_features)
-    model = MaxEntModel(enc)
+    model = MaxEntModel(encoder=enc)
     X = [[1, 0, 1], [0, 0, 1], [1, 0, 1],  [1, 0, 0], [1, 1, 1], [1, 0, 0]]
     y = array([0, 0, 0, 1, 1, 1])
     model.fit(X, y)
@@ -27,13 +29,25 @@ def test_iis():
 
 
 def test_gd():
-    inner_features = [lambda x, y: f1(x, y, 0), lambda x, y: f0(x, y, 0),
-                      lambda x, y: f1(x, y, 1), lambda x, y: f0(x, y, 1),
-                      lambda x, y: f1(x, y, 2), lambda x, y: f0(x, y, 2)]
-    enc = Encoder(*inner_features)
-    model = MaxEntModel(enc)
-    X = [[1, 0, 1], [0, 0, 1], [1, 0, 1],  [1, 0, 0], [1, 1, 1], [1, 0, 0]]
-    y = array([0, 0, 0, 1, 1, 1])
-    model.fit(X, y, method='gd', iterations=50)
-    assert_equal([model.predict(e) for e in X], [0, 0, 0, 1, 1, 1])
-    assert_almost_equal(model.w, [0.025, 0.01639, 0.0083,  0., 0.0083, 0.0247], decimal=3)
+    model = MaxEntModel()
+    X = lil_matrix([[1, 1, 0, 1], [1, 0, 0, 1], [1, 1, 0, 1],  [1, 1, 0, 0], [1, 1, 1, 1], [1, 1, 0, 0]])
+    y = array([[0, 0, 0, 1, 1, 1]]).T
+    model.fit(X, y, method='gd', iterations=100, C=0.)
+
+    pred = [model.predict(X[i, :]) for i in range(X.shape[0])]
+    assert_equal(pred, [0, 0, 0, 1, 1, 1])
+    assert_almost_equal(model.w, [[-0.0906, -0.6742, -0.7803,  1.2476 ]], decimal=3)
+
+
+def test_sgd():
+    X = array([[1, 0, 1], [0, 0, 1], [1, 0, 1],  [1, 0, 0], [1, 1, 1], [1, 0, 0]])
+    X = hstack((ones((6, 1)), X))
+    y = array([[0, 0, 0, 1, 1, 1]]).T
+
+    seed(1)
+
+    model = MaxEntModel()
+    model.fit(X, y, method='sgd', iterations=50, C=0.)
+    pred = [model.predict(X[i, :]) for i in range(X.shape[0])]
+    assert_equal(pred, [0, 0, 0, 1, 1, 1])
+    assert_almost_equal(model.w, [[-0.260, -1.320, -2.019, 2.655]], decimal=3)
