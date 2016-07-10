@@ -1,0 +1,1374 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     42494,       1365]
+NotebookOptionsPosition[     42239,       1351]
+NotebookOutlinePosition[     42593,       1367]
+CellTagsIndexPosition[     42550,       1364]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[TextData[{
+ "Observe ",
+ StyleBox["d",
+  FontSlant->"Italic"],
+ " with category ",
+ StyleBox["c\n",
+  FontSlant->"Italic"],
+ "Feature function ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"f", ":", 
+    RowBox[{
+     RowBox[{"C", "\[Times]", "D"}], "\[RightArrow]", 
+     "\[DoubleStruckCapitalR]"}]}], TraditionalForm]]],
+ "\nIndicator over input and class ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      SubscriptBox["f", "i"], "(", 
+      RowBox[{"c", ",", "d"}], ")"}], "\[Congruent]", 
+     RowBox[{"[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"\[CapitalPhi]", "(", "d", ")"}], "\[Wedge]", "c"}], "=", 
+       SubscriptBox["c", "i"]}], "]"}]}], "\[RightArrow]", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "1"}], "}"}]}], TraditionalForm]]],
+ "\nExpectation of feature in model ",
+ Cell[BoxData[
+  FormBox["P", TraditionalForm]]],
+ ": ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"E", "(", 
+     SubscriptBox["f", "i"], ")"}], "=", 
+    RowBox[{
+     SubscriptBox["\[Sum]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+       RowBox[{"(", 
+        RowBox[{"C", ",", "D"}], ")"}]}]], 
+     RowBox[{
+      RowBox[{"P", "(", 
+       RowBox[{"c", ",", "d"}], ")"}], 
+      RowBox[{
+       SubscriptBox["f", "i"], "(", 
+       RowBox[{"c", ",", "d"}], ")"}]}]}]}], TraditionalForm]]],
+ "\nEmperical expectation: ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     OverscriptBox["E", "~"], "(", 
+     SubscriptBox["f", "i"], ")"}], "=", 
+    RowBox[{
+     SubscriptBox["\[CapitalSigma]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+       RowBox[{"Observed", " ", 
+        RowBox[{"(", 
+         RowBox[{"C", ",", "D"}], ")"}]}]}]], 
+     RowBox[{
+      SubscriptBox["f", "i"], "(", 
+      RowBox[{"c", ",", "d"}], ")"}]}]}], TraditionalForm]]],
+ "\nSoftmax transforms linear function to probability:\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"P", "(", 
+     RowBox[{"c\[VerticalLine]d", ",", "\[Lambda]"}], ")"}], "=", 
+    FractionBox[
+     RowBox[{"exp", "(", 
+      RowBox[{
+       SubscriptBox["\[CapitalSigma]", "i"], 
+       SubscriptBox["\[Lambda]", "i"], 
+       RowBox[{
+        SubscriptBox["f", "i"], "(", 
+        RowBox[{"c", ",", "d"}], ")"}]}], ")"}], 
+     RowBox[{
+      SubscriptBox["\[CapitalSigma]", 
+       SuperscriptBox["c", "\[Prime]"]], 
+      RowBox[{"exp", "(", 
+       RowBox[{
+        SubscriptBox["\[CapitalSigma]", "i"], 
+        SubscriptBox["\[Lambda]", "i"], 
+        RowBox[{
+         SubscriptBox["f", "i"], "(", 
+         RowBox[{
+          SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}], ")"}]}]]}], 
+   TraditionalForm]]],
+ "\nMaximize conditional likelihood:\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{"log", " ", 
+     RowBox[{"P", "(", 
+      RowBox[{"C\[VerticalLine]D", ",", "\[Lambda]"}], ")"}]}], " ", "=", " ", 
+    RowBox[{
+     RowBox[{
+      SubscriptBox["\[CapitalSigma]", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+        RowBox[{"(", 
+         RowBox[{"C", ",", "D"}], ")"}]}]], "log", " ", 
+      RowBox[{"exp", "(", 
+       RowBox[{
+        SubscriptBox["\[CapitalSigma]", "i"], 
+        SubscriptBox["\[Lambda]", "i"], 
+        RowBox[{
+         SubscriptBox["f", "i"], "(", 
+         RowBox[{"c", ",", "d"}], ")"}]}], ")"}]}], "-", 
+     RowBox[{"log", " ", 
+      SubscriptBox["\[CapitalSigma]", 
+       SuperscriptBox["c", "\[Prime]"]], 
+      RowBox[{"exp", "(", 
+       RowBox[{
+        SubscriptBox["\[CapitalSigma]", "i"], 
+        SubscriptBox["\[Lambda]", "i"], 
+        RowBox[{
+         SubscriptBox["f", "i"], "(", 
+         RowBox[{
+          SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}], ")"}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{"                                 ", 
+    RowBox[{"=", " ", 
+     RowBox[{
+      RowBox[{"N", "(", "\[Lambda]", ")"}], "-", 
+      RowBox[{"M", "(", "\[Lambda]", ")"}]}]}]}], TraditionalForm]}]],
+ "\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox["\[PartialD]", 
+      RowBox[{"\[PartialD]", 
+       SubscriptBox["\[Lambda]", "i"]}]], 
+     RowBox[{"N", "(", "\[Lambda]", ")"}]}], "=", 
+    RowBox[{
+     SubscriptBox["\[CapitalSigma]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+       RowBox[{"(", 
+        RowBox[{"C", ",", "D"}], ")"}]}]], 
+     RowBox[{
+      SubscriptBox["f", "i"], "(", 
+      RowBox[{"c", ",", "d"}], ")"}]}]}], TraditionalForm]]],
+ "\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox["\[PartialD]", 
+      RowBox[{"\[PartialD]", 
+       SubscriptBox["\[Lambda]", "i"]}]], 
+     RowBox[{"M", "(", "\[Lambda]", ")"}]}], "=", 
+    RowBox[{
+     SubscriptBox["\[CapitalSigma]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+       RowBox[{"(", 
+        RowBox[{"C", ",", "D"}], ")"}]}]], 
+     FractionBox["1", 
+      RowBox[{
+       SubscriptBox["\[CapitalSigma]", 
+        SuperscriptBox["c", "\[Prime]"]], 
+       RowBox[{"exp", "(", 
+        RowBox[{
+         SubscriptBox["\[CapitalSigma]", "i"], 
+         SubscriptBox["\[Lambda]", "i"], 
+         RowBox[{
+          SubscriptBox["f", "i"], "(", 
+          RowBox[{
+           SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}], ")"}]}]], 
+     SubscriptBox["\[CapitalSigma]", 
+      SuperscriptBox["c", "\[Prime]"]], 
+     RowBox[{
+      FractionBox["\[PartialD]", 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Lambda]", "i"]}]], 
+      RowBox[{"exp", "(", 
+       RowBox[{
+        SubscriptBox["\[CapitalSigma]", "i"], 
+        SubscriptBox["\[Lambda]", "i"], 
+        RowBox[{
+         SubscriptBox["f", "i"], "(", 
+         RowBox[{
+          SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}], ")"}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{"                   ", 
+    RowBox[{"=", 
+     RowBox[{
+      SubscriptBox["\[CapitalSigma]", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+        RowBox[{"(", 
+         RowBox[{"C", ",", "D"}], ")"}]}]], 
+      SubscriptBox["\[CapitalSigma]", 
+       SuperscriptBox["c", "\[Prime]"]], 
+      FractionBox[
+       RowBox[{"exp", "(", 
+        RowBox[{
+         SubscriptBox["\[CapitalSigma]", "i"], 
+         SubscriptBox["\[Lambda]", "i"], 
+         RowBox[{
+          SubscriptBox["f", "i"], "(", 
+          RowBox[{
+           SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}], ")"}], 
+       RowBox[{
+        SubscriptBox["\[CapitalSigma]", 
+         SuperscriptBox["c", "\[Prime]"]], 
+        RowBox[{"exp", "(", 
+         RowBox[{
+          SubscriptBox["\[CapitalSigma]", "i"], 
+          SubscriptBox["\[Lambda]", "i"], 
+          RowBox[{
+           SubscriptBox["f", "i"], "(", 
+           RowBox[{
+            SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}], ")"}]}]], 
+      RowBox[{
+       FractionBox["\[PartialD]", 
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["\[Lambda]", "i"]}]], 
+       SubscriptBox["\[CapitalSigma]", "i"]}], 
+      SubscriptBox["\[Lambda]", "i"], 
+      RowBox[{
+       SubscriptBox["f", "i"], "(", 
+       RowBox[{
+        SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{"                   ", 
+    RowBox[{"=", 
+     RowBox[{
+      SubscriptBox["\[CapitalSigma]", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+        RowBox[{"(", 
+         RowBox[{"C", ",", "D"}], ")"}]}]], 
+      SubscriptBox["\[CapitalSigma]", 
+       SuperscriptBox["c", "\[Prime]"]], 
+      FractionBox[
+       RowBox[{"exp", "(", 
+        RowBox[{
+         SubscriptBox["\[CapitalSigma]", "i"], 
+         SubscriptBox["\[Lambda]", "i"], 
+         RowBox[{
+          SubscriptBox["f", "i"], "(", 
+          RowBox[{
+           SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}], ")"}], 
+       RowBox[{
+        SubscriptBox["\[CapitalSigma]", 
+         SuperscriptBox["c", "\[Prime]"]], 
+        RowBox[{"exp", "(", 
+         RowBox[{
+          SubscriptBox["\[CapitalSigma]", "i"], 
+          SubscriptBox["\[Lambda]", "i"], 
+          RowBox[{
+           SubscriptBox["f", "i"], "(", 
+           RowBox[{
+            SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}], ")"}]}]], 
+      RowBox[{
+       SubscriptBox["f", "i"], "(", 
+       RowBox[{
+        SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{"                  ", 
+    RowBox[{"=", 
+     RowBox[{
+      SubscriptBox["\[CapitalSigma]", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+        RowBox[{"(", 
+         RowBox[{"C", ",", "D"}], ")"}]}]], 
+      SubscriptBox["\[CapitalSigma]", 
+       SuperscriptBox["c", "\[Prime]"]], 
+      RowBox[{"P", "(", 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["c", "\[Prime]"], "\[VerticalLine]d"}], ",", 
+        "\[Lambda]"}], ")"}], 
+      RowBox[{
+       SubscriptBox["f", "i"], "(", 
+       RowBox[{
+        SuperscriptBox["c", "\[Prime]"], ",", "d"}], ")"}]}]}]}], 
+   TraditionalForm]}]],
+ "\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      FractionBox["\[PartialD]", 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Lambda]", "i"]}]], "log"}], " ", 
+     RowBox[{"P", "(", 
+      RowBox[{"C\[VerticalLine]D", ",", "\[Lambda]"}], ")"}]}], " ", "=", 
+    RowBox[{
+     RowBox[{"emprical", " ", "count"}], " ", "-", " ", 
+     RowBox[{"predicted", " ", "count"}]}]}], TraditionalForm]]],
+ "\n",
+ StyleBox["Connection between conditional and joint models\n", "Subsection"],
+ "Expectation of features: ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"E", "(", 
+     SubscriptBox["f", "i"], ")"}], "=", 
+    RowBox[{
+     SubscriptBox["\[CapitalSigma]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+       RowBox[{"(", 
+        RowBox[{"C", ",", "D"}], ")"}]}]], 
+     RowBox[{"P", "(", 
+      RowBox[{"c", ",", "d"}], ")"}], 
+     RowBox[{
+      SubscriptBox["f", "i"], "(", 
+      RowBox[{"c", ",", "d"}], ")"}]}]}], TraditionalForm]]],
+ "\nUnfeasible over all possible ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"d", "\[Element]", "D"}], TraditionalForm]]],
+ "\nConstrain to match empirical data: ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"\[ForAll]", 
+     RowBox[{
+      RowBox[{"(", "d", ")"}], "\[Element]", 
+      RowBox[{"D", " ", ":", " ", 
+       RowBox[{"P", "(", "d", ")"}]}]}]}], "=", 
+    RowBox[{
+     OverscriptBox["P", "^"], "(", "d", ")"}]}], TraditionalForm]]],
+ "\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{"E", "(", 
+     SubscriptBox["f", "i"], ")"}], "=", 
+    RowBox[{
+     SubscriptBox["\[CapitalSigma]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+       RowBox[{"(", 
+        RowBox[{"C", ",", "D"}], ")"}]}]], 
+     RowBox[{"P", "(", 
+      RowBox[{"c", ",", "d"}], ")"}], 
+     RowBox[{
+      SubscriptBox["f", "i"], "(", 
+      RowBox[{"c", ",", "d"}], ")"}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{"           ", 
+    RowBox[{"=", 
+     RowBox[{
+      SubscriptBox["\[CapitalSigma]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+         RowBox[{"(", 
+          RowBox[{"C", ",", "D"}], ")"}]}], "\[And]", 
+        RowBox[{
+         RowBox[{
+          OverscriptBox["P", "^"], "(", "d", ")"}], ">", "0"}]}]], 
+      RowBox[{"P", "(", 
+       RowBox[{"c", ",", "d"}], ")"}], 
+      RowBox[{
+       SubscriptBox["f", "i"], "(", 
+       RowBox[{"c", ",", "d"}], ")"}]}]}]}], TraditionalForm]}]],
+ "\nAnd ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"P", "(", 
+     RowBox[{"c", ",", "d"}], ")"}], "=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"P", "(", "c\[VerticalLine]d", ")"}], 
+      RowBox[{"P", "(", "d", ")"}]}], "=", 
+     RowBox[{
+      RowBox[{"P", "(", "c\[VerticalLine]d", ")"}], 
+      RowBox[{
+       OverscriptBox["P", "^"], "(", "d", ")"}]}]}]}], TraditionalForm]]],
+ " means only the conditional can vary when the marginal is fixed\nWith this \
+constraint maximizing the joint and the coditional is equivalent\n",
+ StyleBox["Smoothing\n", "Subsection"],
+ "Maximize posterior likelihood: ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"P", "(", 
+     RowBox[{"C", ",", "\[Lambda]\[VerticalLine]D"}], ")"}], "=", 
+    RowBox[{
+     RowBox[{"P", "(", "\[Lambda]", ")"}], 
+     RowBox[{"P", "(", 
+      RowBox[{"C\[VerticalLine]D", ",", "\[Lambda]"}], ")"}]}]}], 
+   TraditionalForm]]],
+ "\nUse gaussian prior ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"N", "(", 
+    RowBox[{"0", ",", 
+     FractionBox["1", "2"]}], ")"}], TraditionalForm]]],
+ " or ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"\[Mu]", "=", "0"}], ",", 
+    RowBox[{
+     RowBox[{"2", 
+      SuperscriptBox["\[Sigma]", "2"]}], "=", "1"}]}], TraditionalForm]]],
+ "\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{"log", " ", 
+     RowBox[{"P", "(", 
+      RowBox[{"C", ",", "\[Lambda]\[VerticalLine]D"}], ")"}]}], "=", 
+    RowBox[{
+     RowBox[{"log", " ", 
+      RowBox[{"P", "(", 
+       RowBox[{"C\[VerticalLine]D", ",", "\[Lambda]"}], ")"}]}], "-", 
+     RowBox[{"log", "(", "\[Lambda]", ")"}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{"                               ", 
+    RowBox[{"=", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["\[Sum]", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"c", ",", "d"}], ")"}], "\[Element]", 
+         RowBox[{"(", 
+          RowBox[{"C", ",", "D"}], ")"}]}]], 
+       RowBox[{"P", "(", 
+        RowBox[{"c\[VerticalLine]d", ",", "\[Lambda]"}], ")"}]}], "-", 
+      RowBox[{
+       SubscriptBox["\[CapitalSigma]", "i"], 
+       FractionBox[
+        SubsuperscriptBox["\[Lambda]", "i", "2"], 
+        RowBox[{"2", 
+         SuperscriptBox["\[Sigma]", "2"]}]]}], "+", "k"}]}]}], 
+   TraditionalForm]}]],
+ "\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      FractionBox["\[PartialD]", 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Lambda]", "i"]}]], "log"}], " ", 
+     RowBox[{"P", "(", 
+      RowBox[{"C", ",", "\[Lambda]\[VerticalLine]D"}], ")"}]}], "=", " ", 
+    RowBox[{
+     RowBox[{"emprical", " ", "count"}], " ", "-", " ", 
+     RowBox[{"predicted", " ", "count"}], " ", "-", " ", 
+     FractionBox[
+      SubscriptBox["\[Lambda]", "i"], 
+      SuperscriptBox["\[Sigma]", "2"]]}]}], TraditionalForm]]],
+ "\n",
+ StyleBox["Conjugate gradient descent\n", "Subsection"],
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["s", "i"], "=", 
+    RowBox[{
+     RowBox[{"\[Del]", 
+      RowBox[{"f", "(", 
+       SubscriptBox["x", "i"], ")"}]}], "+", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "i"], 
+      SubscriptBox["s", 
+       RowBox[{"i", "-", "1"}]]}]}]}], TraditionalForm]]],
+ "\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["\[Beta]", "i"], "=", 
+    FractionBox[
+     RowBox[{
+      RowBox[{"\[Del]", 
+       SuperscriptBox[
+        RowBox[{"f", "(", 
+         SubscriptBox["x", "i"], ")"}], "\[DownTee]"]}], 
+      RowBox[{"\[Del]", 
+       RowBox[{"f", "(", 
+        SubscriptBox["x", "i"], ")"}]}]}], 
+     RowBox[{
+      RowBox[{"\[Del]", 
+       SuperscriptBox[
+        RowBox[{"f", "(", 
+         SubscriptBox["x", 
+          RowBox[{"i", "-", "1"}]], ")"}], "\[DownTee]"]}], 
+      RowBox[{"\[Del]", 
+       RowBox[{"f", "(", 
+        SubscriptBox["x", 
+         RowBox[{"i", "-", "1"}]], ")"}]}]}]]}], TraditionalForm]]],
+ "\n(Klein, ACL workshop)\n",
+ StyleBox["Correctness of logistic regression model\n", "Subsection"],
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["\[CapitalSigma]", "i"], 
+     SubscriptBox["y", "i"], 
+     SubscriptBox["x", "ij"]}], "=", 
+    RowBox[{
+     SubscriptBox["\[CapitalSigma]", "i"], 
+     SubscriptBox["p", "i"], 
+     SubscriptBox["x", "ij"]}]}], TraditionalForm]]],
+ " and ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox["1", "N"], 
+     SubscriptBox["\[CapitalSigma]", "i"], 
+     SubscriptBox["y", "i"]}], "=", 
+    RowBox[{
+     FractionBox["1", "N"], 
+     SubscriptBox["\[CapitalSigma]", "i"], 
+     SubscriptBox["p", "i"]}]}], TraditionalForm]]],
+ " for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"j", "=", "0"}], TraditionalForm]]],
+ " bias feature\nDerivative of log conditional likelihood ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox["\[PartialD]", 
+      RowBox[{"\[PartialD]", 
+       SubscriptBox["\[Beta]", "j"]}]], "LCL"}], "=", 
+    RowBox[{
+     RowBox[{
+      SubscriptBox["\[CapitalSigma]", "i"], "(", 
+      RowBox[{
+       SubscriptBox["y", "i"], "-", 
+       SubscriptBox["p", "i"]}], ")"}], 
+     SubscriptBox["x", "ij"]}]}], TraditionalForm]]],
+ "\nGradient based update ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["\[Beta]", "j"], ":=", 
+    RowBox[{
+     SubscriptBox["\[Beta]", "j"], "+", 
+     RowBox[{"\[Lambda]", 
+      RowBox[{
+       FractionBox["\[PartialD]", 
+        RowBox[{"\[PartialD]", 
+         SubscriptBox["\[Beta]", "j"]}]], "LCL"}]}]}]}], TraditionalForm]]],
+ "\nStochastic gradient descent ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["\[Beta]", "j"], ":=", 
+    RowBox[{
+     SubscriptBox["\[Beta]", "\.b4j"], "+", 
+     RowBox[{
+      RowBox[{"\[Lambda]", "(", 
+       RowBox[{
+        SubscriptBox["y", "i"], "-", 
+        SubscriptBox["p", "i"]}], ")"}], 
+      SubscriptBox["x", "ij"]}]}]}], TraditionalForm]]],
+ " for i uniformly drawn from the training samples\n",
+ StyleBox["SGD heuristics\n", "Subsection"],
+ "Complete update over training set - epoch\nUsually 3-100 epochs\n\[Lambda] \
+is hyperparameter, can be gradually decreased\n\[Lambda] shared across all \
+paramters means it makes sense to normalize features\nRestricts computation \
+to features present in a single example\n",
+ StyleBox["Coordinate descent\n", "Subsection"],
+ "Full training data update of each feature: ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    OverscriptBox["\[Beta]", "_"], ":=", " ", 
+    RowBox[{
+     OverscriptBox["\[Beta]", "_"], "+", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        RowBox[{
+         OverscriptBox["y", "_"], "-", 
+         OverscriptBox["p", "_"]}], ")"}], "\[DownTee]"], "X"}]}]}], 
+   TraditionalForm]]],
+ "\nSlow but may be done once after SGD training\n",
+ StyleBox["L2 regularization\n", "Subsection"],
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["\[Beta]", "j"], ":=", 
+    RowBox[{
+     SubscriptBox["\[Beta]", "j"], "+", 
+     RowBox[{"\[Lambda]", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          SubscriptBox["y", "i"], "-", 
+          SubscriptBox["p", "i"]}], ")"}], 
+        SubscriptBox["x", "ij"]}], "-", 
+       RowBox[{"2", 
+        SubscriptBox["\[Mu]\[Beta]", "j"]}]}], "]"}]}]}], TraditionalForm]]],
+ "\n(Elkan 2014)\n",
+ StyleBox["Sparse regularization\n", "Subsection"],
+ "Error function is the sum of the likelihood and prior error\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"Err", "(", 
+     RowBox[{"\[Beta]", ",", "D", ",", 
+      SuperscriptBox["\[Sigma]", "2"]}], ")"}], "=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       SubscriptBox["Err", "l"], "(", 
+       RowBox[{"D", ",", "\[Beta]"}], ")"}], "+", 
+      RowBox[{
+       SubscriptBox["Err", "R"], "(", 
+       RowBox[{"\[Beta]", ",", 
+        SuperscriptBox["\[Sigma]", "2"]}], ")"}]}], "=", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["\[Sum]", 
+        RowBox[{"j", "<", "n"}]], 
+       RowBox[{
+        SubscriptBox["Err", "l"], "(", 
+        RowBox[{
+         SubscriptBox["c", "j"], ",", 
+         RowBox[{
+          SubscriptBox["x", 
+           RowBox[{"j", ","}]], "\[Beta]"}]}], ")"}]}], "+", 
+      RowBox[{
+       SubscriptBox["\[Sum]", 
+        RowBox[{"i", "<", "d"}]], 
+       RowBox[{
+        SubscriptBox["Err", "R"], "(", 
+        RowBox[{
+         SubscriptBox["\[Beta]", "i"], ",", 
+         SubsuperscriptBox["\[Sigma]", "i", "2"]}], ")"}]}]}]}]}], 
+   TraditionalForm]]],
+ "\nError gradient\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["\[Del]", 
+      RowBox[{"c", ",", "i"}]], 
+     RowBox[{"Err", "(", 
+      RowBox[{"D", ",", "\[Beta]", ",", 
+       SuperscriptBox["\[Sigma]", "2"]}], ")"}]}], "=", 
+    RowBox[{
+     FractionBox["\[PartialD]", 
+      RowBox[{"\[PartialD]", 
+       SubscriptBox["\[Beta]", 
+        RowBox[{"c", ",", "i"}]]}]], 
+     RowBox[{"Err", "(", 
+      RowBox[{"D", ",", "\[Beta]", ",", 
+       SuperscriptBox["\[Sigma]", "2"]}], ")"}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{"                                       ", 
+    RowBox[{"=", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{
+        SubscriptBox["\[Sum]", 
+         RowBox[{"j", "<", "n"}]], 
+        RowBox[{
+         RowBox[{
+          FractionBox["\[PartialD]", 
+           RowBox[{"\[PartialD]", 
+            SubscriptBox["\[Beta]", 
+             RowBox[{"c", ",", "i"}]]}]], "log"}], " ", 
+         RowBox[{"p", "(", 
+          RowBox[{
+           SubscriptBox["c", "j"], 
+           SubscriptBox["\[VerticalLine]x", 
+            RowBox[{"j", ","}]], "\[Beta]"}], ")"}]}]}]}], "-", 
+      RowBox[{
+       RowBox[{
+        FractionBox["\[PartialD]", 
+         RowBox[{"\[PartialD]", 
+          SubscriptBox["\[Beta]", 
+           RowBox[{"c", ",", "i"}]]}]], "log"}], " ", 
+       RowBox[{"p", "(", 
+        RowBox[{
+         SubscriptBox["\[Beta]", 
+          RowBox[{"c", ",", "i"}]], 
+         SubsuperscriptBox["\[VerticalLine]\[Sigma]", "i", "2"]}], 
+        ")"}]}]}]}]}], TraditionalForm]}]],
+ "\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      FractionBox["\[PartialD]", 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Beta]", 
+         RowBox[{"c", ",", "i"}]]}]], "log"}], " ", 
+     RowBox[{"p", "(", 
+      RowBox[{
+       SubscriptBox["c", "j"], 
+       SubscriptBox["\[VerticalLine]x", 
+        RowBox[{"j", ","}]], "\[Beta]"}], ")"}]}], "=", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"I", "(", 
+        RowBox[{"c", "=", 
+         SubscriptBox["c", "j"]}], ")"}], "-", 
+       RowBox[{"p", "(", 
+        RowBox[{
+         SubscriptBox["c\[VerticalLine]x", "j"], ",", "\[Beta]"}], ")"}]}], 
+      ")"}], 
+     SubscriptBox["x", 
+      RowBox[{"j", ",", "i"}]]}]}], TraditionalForm]]],
+ "\nError Hessian\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubsuperscriptBox["\[Del]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "i"}], ")"}], ",", 
+       RowBox[{"(", 
+        RowBox[{"b", ",", "h"}], ")"}]}], "2"], 
+     RowBox[{"Err", "(", 
+      RowBox[{"D", ",", "\[Beta]", ",", 
+       SuperscriptBox["\[Sigma]", "2"]}], ")"}]}], "=", 
+    RowBox[{
+     RowBox[{
+      SubsuperscriptBox["\[Del]", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"c", ",", "i"}], ")"}], ",", 
+        RowBox[{"(", 
+         RowBox[{"b", ",", "h"}], ")"}]}], "2"], 
+      RowBox[{
+       SubscriptBox["Err", "l"], "(", 
+       RowBox[{"D", ",", "\[Beta]"}], ")"}]}], "+", 
+     RowBox[{
+      SubsuperscriptBox["\[Del]", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"c", ",", "i"}], ")"}], ",", 
+        RowBox[{"(", 
+         RowBox[{"b", ",", "h"}], ")"}]}], "2"], 
+      RowBox[{
+       SubscriptBox["Err", "R"], "(", 
+       RowBox[{"\[Beta]", ",", 
+        SuperscriptBox["\[Sigma]", "2"]}], ")"}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubsuperscriptBox["\[Del]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "i"}], ")"}], ",", 
+       RowBox[{"(", 
+        RowBox[{"b", ",", "h"}], ")"}]}], "2"], 
+     RowBox[{
+      SubscriptBox["Err", "l"], "(", 
+      RowBox[{"D", ",", "\[Beta]"}], ")"}]}], "=", 
+    RowBox[{
+     FractionBox[
+      SuperscriptBox["\[PartialD]", "2"], 
+      RowBox[{
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Beta]", 
+         RowBox[{"c", ",", "i"}]]}], 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Beta]", 
+         RowBox[{"b", ",", "h"}]]}]}]], 
+     RowBox[{
+      SubscriptBox["Err", "l"], "(", 
+      RowBox[{"D", ",", "\[Beta]"}], ")"}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{"                                           ", 
+    RowBox[{"=", 
+     RowBox[{
+      RowBox[{"-", 
+       SubscriptBox["x", 
+        RowBox[{"j", ",", "i"}]]}], 
+      SubscriptBox["x", 
+       RowBox[{"j", ",", "h"}]], 
+      RowBox[{"p", "(", 
+       RowBox[{
+        SubscriptBox["c\[VerticalLine]x", "j"], ",", "\[Beta]"}], ")"}], 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"I", "(", 
+         RowBox[{"c", "=", "b"}], ")"}], "+", 
+        RowBox[{"p", "(", 
+         RowBox[{
+          SubscriptBox["b\[VerticalLine]x", "j"], ",", "\[Beta]"}], ")"}]}], 
+       ")"}]}]}]}], TraditionalForm]}]],
+ "\nAll Hessians here are concave. Therefore MAP estimate exists.\nSetting \
+the gradient to zero with estimated parameters gives expected count equals \
+empirical count\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["\[Sum]", 
+      RowBox[{"j", "<", "n"}]], 
+     RowBox[{
+      SubscriptBox["x", 
+       RowBox[{"j", ",", "i"}]], 
+      RowBox[{"p", "(", 
+       RowBox[{
+        SubscriptBox["c\[VerticalLine]x", "j"], ",", 
+        OverscriptBox["\[Beta]", "^"]}], ")"}]}]}], "=", 
+    RowBox[{
+     SubscriptBox["\[Sum]", 
+      RowBox[{"j", "<", "n"}]], 
+     RowBox[{
+      SubscriptBox["x", 
+       RowBox[{"j", ",", "i"}]], 
+      RowBox[{"I", "(", 
+       RowBox[{
+        SubscriptBox["c", "j"], "=", "c"}], ")"}]}]}]}], TraditionalForm]]],
+ "\nWith prior regularization empirical counts are discounted\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["\[Sum]", 
+      RowBox[{"j", "<", "n"}]], 
+     RowBox[{
+      SubscriptBox["x", 
+       RowBox[{"j", ",", "i"}]], 
+      RowBox[{"p", "(", 
+       RowBox[{
+        SubscriptBox["c\[VerticalLine]x", "j"], ",", 
+        OverscriptBox["\[Beta]", "^"]}], ")"}]}]}], "=", 
+    RowBox[{
+     RowBox[{
+      SubscriptBox["\[Sum]", 
+       RowBox[{"j", "<", "n"}]], 
+      RowBox[{
+       SubscriptBox["x", 
+        RowBox[{"j", ",", "i"}]], 
+       RowBox[{"I", "(", 
+        RowBox[{
+         SubscriptBox["c", "j"], "=", "c"}], ")"}]}]}], "-", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["\[Del]", 
+        RowBox[{"c", ",", "i"}]], 
+       RowBox[{
+        SubscriptBox["Err", "R"], "(", 
+        RowBox[{
+         SubscriptBox["\[Beta]", 
+          RowBox[{"c", ",", "i"}]], ",", 
+         SubsuperscriptBox["\[Sigma]", "i", "2"]}], ")"}]}], 
+      RowBox[{"(", 
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], 
+        RowBox[{"c", ",", "i"}]], ")"}]}]}]}], TraditionalForm]]],
+ StyleBox["\nGaussian", "Subsection"],
+ "\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{"p", "(", "\[Beta]", ")"}], "=", 
+    RowBox[{
+     SubscriptBox["\[Product]", 
+      RowBox[{"c", "<", 
+       RowBox[{"k", "-", "1"}]}]], 
+     RowBox[{
+      UnderscriptBox["\[Product]", 
+       RowBox[{"i", "<", "d"}]], 
+      RowBox[{
+       RowBox[{"Norm", "(", 
+        RowBox[{"0", ",", 
+         SuperscriptBox[
+          SubscriptBox["\[Sigma]", "i"], "2"]}], ")"}], 
+       RowBox[{"(", 
+        SubscriptBox["\[Beta]", 
+         RowBox[{"c", ",", "i"}]], ")"}]}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{"Norm", "(", 
+      RowBox[{"0", ",", 
+       SubsuperscriptBox["\[Sigma]", "i", "2"]}], ")"}], 
+     RowBox[{"(", 
+      SubscriptBox["\[Beta]", 
+       RowBox[{"c", ",", "i"}]], ")"}]}], "=", 
+    RowBox[{
+     FractionBox["1", 
+      RowBox[{
+       SubscriptBox["\[Sigma]", "i"], 
+       SqrtBox[
+        RowBox[{"2", "\[Pi]"}]]}]], 
+     RowBox[{"exp", "(", 
+      RowBox[{"-", 
+       FractionBox[
+        SubsuperscriptBox["\[Beta]", 
+         RowBox[{"c", ",", "i"}], "2"], 
+        RowBox[{"2", 
+         SubsuperscriptBox["\[Sigma]", "i", "2"]}]]}], ")"}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      FractionBox["\[PartialD]", 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Beta]", 
+         RowBox[{"c", ",", "i"}]]}]], "log"}], " ", 
+     RowBox[{"p", "(", 
+      RowBox[{
+       SubscriptBox["\[Beta]", 
+        RowBox[{"c", ",", "i"}]], 
+       SubsuperscriptBox["\[VerticalLine]\[Sigma]", "i", "2"]}], ")"}]}], "=", 
+    RowBox[{"-", 
+     FractionBox[
+      SubscriptBox["\[Beta]", 
+       RowBox[{"c", ",", "i"}]], 
+      SubsuperscriptBox["\[Sigma]", "i", "2"]]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubsuperscriptBox["\[Del]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "i"}], ")"}], ",", 
+       RowBox[{"(", 
+        RowBox[{"b", ",", "h"}], ")"}]}], "2"], 
+     RowBox[{
+      SubscriptBox["Err", "L2"], "(", 
+      SuperscriptBox["\[Beta]\[VerticalLine]\[Sigma]", "2"], ")"}]}], "=", 
+    RowBox[{
+     RowBox[{"-", 
+      RowBox[{"I", "(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"c", ",", "i"}], ")"}], "=", 
+        RowBox[{"(", 
+         RowBox[{"b", ",", "h"}], ")"}]}], ")"}]}], 
+     FractionBox["1", 
+      SubsuperscriptBox["\[Sigma]", "i", "2"]]}]}], TraditionalForm]}]],
+ "\n",
+ StyleBox["Laplace", "Subsection"],
+ "\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{"p", "(", "\[Beta]", ")"}], "=", 
+    RowBox[{
+     SubscriptBox["\[Product]", 
+      RowBox[{"c", "<", 
+       RowBox[{"k", "-", "1"}]}]], 
+     RowBox[{
+      UnderscriptBox["\[Product]", 
+       RowBox[{"i", "<", "d"}]], 
+      RowBox[{
+       RowBox[{"Laplace", "(", 
+        RowBox[{"0", ",", 
+         SuperscriptBox[
+          SubscriptBox["\[Sigma]", "i"], "2"]}], ")"}], 
+       RowBox[{"(", 
+        SubscriptBox["\[Beta]", 
+         RowBox[{"c", ",", "i"}]], ")"}]}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{"Laplace", "(", 
+      RowBox[{"0", ",", 
+       SuperscriptBox[
+        SubscriptBox["\[Sigma]", "i"], "2"]}], ")"}], 
+     RowBox[{"(", 
+      SubscriptBox["\[Beta]", 
+       RowBox[{"c", ",", "i"}]], ")"}]}], "=", 
+    RowBox[{
+     FractionBox[
+      SqrtBox["2"], 
+      RowBox[{"2", 
+       SubscriptBox["\[Sigma]", "i"]}]], 
+     RowBox[{"exp", "(", 
+      RowBox[{
+       RowBox[{"-", 
+        SqrtBox["2"]}], 
+       FractionBox[
+        RowBox[{"\[LeftBracketingBar]", 
+         SubscriptBox["\[Beta]", 
+          RowBox[{"c", ",", "i"}]], "\[RightBracketingBar]"}], 
+        SubscriptBox["\[Sigma]", "i"]]}], ")"}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      FractionBox["\[PartialD]", 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Beta]", 
+         RowBox[{"c", ",", "i"}]]}]], "log"}], " ", 
+     RowBox[{"p", "(", 
+      RowBox[{
+       SubscriptBox["\[Beta]", 
+        RowBox[{"c", ",", "i"}]], 
+       SubsuperscriptBox["\[VerticalLine]\[Sigma]", "i", "2"]}], ")"}]}], "=", 
+    TagBox[GridBox[{
+       {"\[Piecewise]", GridBox[{
+          {
+           RowBox[{"-", 
+            FractionBox[
+             SqrtBox["2"], 
+             SubscriptBox["\[Sigma]", "i"]]}], 
+           RowBox[{
+            RowBox[{"if", " ", 
+             SubscriptBox["\[Beta]", 
+              RowBox[{"c", ",", "i"}]]}], ">", "0"}]},
+          {
+           FractionBox[
+            SqrtBox["2"], 
+            SubscriptBox["\[Sigma]", "i"]], 
+           RowBox[{
+            RowBox[{"if", " ", 
+             SubscriptBox["\[Beta]", 
+              RowBox[{"c", ",", "i"}]]}], "<", "0"}]}
+         },
+         AllowedDimensions->{2, Automatic},
+         Editable->True,
+         GridBoxAlignment->{
+          "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{Baseline}}, "RowsIndexed" -> {}},
+         GridBoxItemSize->{
+          "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{1.}}, "RowsIndexed" -> {}},
+         GridBoxSpacings->{"Columns" -> {
+             Offset[0.27999999999999997`], {
+              Offset[0.84]}, 
+             Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+             Offset[0.2], {
+              Offset[0.4]}, 
+             Offset[0.2]}, "RowsIndexed" -> {}},
+         Selectable->True]}
+      },
+      GridBoxAlignment->{
+       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+        "RowsIndexed" -> {}},
+      GridBoxItemSize->{
+       "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+        "RowsIndexed" -> {}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.35]}, 
+          Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}, "RowsIndexed" -> {}}],
+     "Piecewise",
+     DeleteWithContents->True,
+     Editable->False,
+     SelectWithContents->True,
+     Selectable->False]}], TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubsuperscriptBox["\[Del]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "i"}], ")"}], ",", 
+       RowBox[{"(", 
+        RowBox[{"b", ",", "h"}], ")"}]}], "2"], 
+     RowBox[{
+      SubscriptBox["Err", "L1"], "(", 
+      SuperscriptBox["\[Beta]\[VerticalLine]\[Sigma]", "2"], ")"}]}], "=", 
+    "0"}], TraditionalForm]}]],
+ "\n",
+ StyleBox["Cauchy", "Subsection"],
+ "\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{"Cauchy", "(", 
+      RowBox[{"0", ",", 
+       SuperscriptBox[
+        SubscriptBox["\[Sigma]", "i"], "2"]}], ")"}], 
+     RowBox[{"(", 
+      SubscriptBox["\[Beta]", 
+       RowBox[{"c", ",", "i"}]], ")"}]}], "=", 
+    RowBox[{
+     FractionBox["1", 
+      RowBox[{"\[Pi]", " ", "\[Lambda]", " ", 
+       RowBox[{"(", 
+        RowBox[{"1", "+", 
+         SuperscriptBox[
+          RowBox[{"(", 
+           FractionBox[
+            SubscriptBox["\[Beta]", 
+             RowBox[{"c", ",", "i"}]], "\[Lambda]"], ")"}], "2"]}], ")"}]}]], 
+     "=", 
+     RowBox[{
+      FractionBox["1", "\[Pi]"], 
+      RowBox[{"(", 
+       FractionBox["\[Lambda]", 
+        RowBox[{
+         SubsuperscriptBox["\[Beta]", 
+          RowBox[{"c", ",", "i"}], "2"], "+", 
+         SuperscriptBox["\[Lambda]", "2"]}]], ")"}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      FractionBox["\[PartialD]", 
+       RowBox[{"\[PartialD]", 
+        SubscriptBox["\[Beta]", 
+         RowBox[{"c", ",", "i"}]]}]], "log"}], " ", 
+     RowBox[{"p", "(", 
+      RowBox[{
+       SubscriptBox["\[Beta]", 
+        RowBox[{"c", ",", "i"}]], 
+       SubscriptBox["\[VerticalLine]\[Lambda]", "i"]}], ")"}]}], "=", 
+    RowBox[{"-", 
+     FractionBox[
+      RowBox[{"2", 
+       SubscriptBox["\[Beta]", 
+        RowBox[{"c", ",", "i"}]]}], 
+      RowBox[{
+       SubsuperscriptBox["\[Beta]", 
+        RowBox[{"c", ",", "i"}], "2"], "+", 
+       SubsuperscriptBox["\[Lambda]", "i", "2"]}]]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubsuperscriptBox["\[Del]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"c", ",", "i"}], ")"}], ",", 
+       RowBox[{"(", 
+        RowBox[{"b", ",", "h"}], ")"}]}], "2"], 
+     RowBox[{
+      SubscriptBox["Err", "L1"], "(", 
+      SubscriptBox["\[Beta]\[VerticalLine]\[Lambda]", "i"], ")"}]}], "=", 
+    RowBox[{
+     RowBox[{"-", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"c", ",", "i"}], ")"}], "=", 
+        RowBox[{"(", 
+         RowBox[{"b", ",", "h"}], ")"}]}], ")"}]}], 
+     RowBox[{"(", 
+      RowBox[{
+       SuperscriptBox[
+        RowBox[{"(", 
+         FractionBox[
+          RowBox[{"2", 
+           SubscriptBox["\[Beta]", 
+            RowBox[{"c", ",", "i"}]]}], 
+          RowBox[{
+           SubsuperscriptBox["\[Beta]", 
+            RowBox[{"c", ",", "i"}], "2"], "+", 
+           SubsuperscriptBox["\[Lambda]", "i", "2"]}]], ")"}], "2"], "+", 
+       FractionBox[
+        RowBox[{"2", 
+         SubscriptBox["\[Beta]", 
+          RowBox[{"c", ",", "i"}]]}], 
+        RowBox[{
+         SubsuperscriptBox["\[Beta]", 
+          RowBox[{"c", ",", "i"}], "2"], "+", 
+         SubsuperscriptBox["\[Lambda]", "i", "2"]}]]}], ")"}]}]}], 
+   TraditionalForm]}]],
+ "\n",
+ StyleBox["Clipping regularization\n", "Subsection"],
+ "Regularization clipped at zero such that regularization never changes sign \
+of parameter\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    SubscriptBox["\[Beta]", "c"], "\[LeftArrow]", 
+    RowBox[{
+     SubscriptBox["\[Beta]", "c"], "+", 
+     RowBox[{
+      SubscriptBox["\[Eta]", "e"], 
+      RowBox[{
+       SubscriptBox["\[Del]", "c"], 
+       RowBox[{
+        SubscriptBox["Err", "l"], "(", 
+        RowBox[{
+         SubscriptBox["x", "j"], ",", 
+         SubscriptBox["c", "j"], ",", "\[Beta]"}], ")"}]}]}]}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{"if", " ", 
+      SubscriptBox["\[Beta]", "c"]}], "<", 
+     RowBox[{"0", " ", "then", " ", 
+      SubscriptBox["\[Beta]", "c"]}]}], "=", 
+    RowBox[{"min", "(", 
+     RowBox[{"0", ",", 
+      RowBox[{
+       SubscriptBox["\[Beta]", "c"], "+", 
+       RowBox[{
+        SubscriptBox["\[Eta]", "e"], 
+        RowBox[{
+         SubscriptBox["\[Del]", "c"], 
+         RowBox[{
+          SubscriptBox["Err", "R"], "(", 
+          RowBox[{
+           SubscriptBox["\[Beta]", "c"], ",", 
+           SuperscriptBox["\[Sigma]", "2"]}], ")"}]}]}]}]}], ")"}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{"else", " ", 
+     SubscriptBox["\[Beta]", "c"]}], "=", 
+    RowBox[{"max", "(", 
+     RowBox[{"0", ",", 
+      RowBox[{
+       SubscriptBox["\[Beta]", "c"], "+", 
+       RowBox[{
+        SubscriptBox["\[Eta]", "e"], 
+        RowBox[{
+         SubscriptBox["\[Del]", "c"], 
+         RowBox[{
+          SubscriptBox["Err", "R"], "(", 
+          RowBox[{
+           SubscriptBox["\[Beta]", "c"], ",", 
+           SuperscriptBox["\[Sigma]", "2"]}], ")"}]}]}]}]}], ")"}]}], 
+   TraditionalForm]}]],
+ "\n(Carpenter, Lingpipe/alias-i)\n",
+ StyleBox["Annealing\n", "Subsection"],
+ "Annealing schedule parameters 0.005 and 0.9999 are the initial learning \
+rate and the base of the exponent.\n\
+(http://alias-i.com/lingpipe/demos/tutorial/logistic-regression/read-me.html)\
+\n",
+ StyleBox["Sparse computation of model expectation\n", "Subsection"],
+ "Training data as sparse matrix F\n",
+ Cell[BoxData[{
+  FormBox[
+   RowBox[{
+    SubscriptBox[
+     OverscriptBox["q", "."], "\[Theta]"], "=", 
+    RowBox[{"exp", "(", "F\[Theta]", ")"}]}], 
+   TraditionalForm], "\[IndentingNewLine]", 
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["E", 
+      SubscriptBox["q", "\[Theta]"]], "[", "f", "]"}], "=", 
+    RowBox[{
+     RowBox[{"F", "\[Transpose]"}], 
+     SubscriptBox[
+      OverscriptBox["q", "."], "\[Theta]"]}]}], TraditionalForm]}],
+  FormatType->"TraditionalForm"],
+ "\n",
+ StyleBox["Stopping rule\n", "Subsection"],
+ "Sensitive to convergence rate.\n",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox[
+      RowBox[{"\[LeftBracketingBar]", 
+       RowBox[{
+        RowBox[{"L", "(", 
+         SuperscriptBox["\[Theta]", "k"], ")"}], "-", 
+        RowBox[{"L", "(", 
+         SuperscriptBox["\[Theta]", 
+          RowBox[{"k", "-", "1"}]], ")"}]}], "\[RightBracketingBar]"}], 
+      RowBox[{"L", "(", 
+       SuperscriptBox["\[Theta]", "k"], ")"}]], "<", "\[Epsilon]"}], "=", 
+    SuperscriptBox["10", 
+     RowBox[{"-", "7"}]]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ "\nFor each run, we report the KL divergence between the fitted model and \
+the train- ing data at convergence, the prediction accuracy of fitted model \
+on a held-out test set (the fraction of contexts for which the event with the \
+highest prob- ability under the model also had the highest probability under \
+the reference distribution), the number of iterations required, the number of \
+log-likelihood and gradient evaluations required (algorithms which use a line \
+search may require several function eval- uations per iteration), and the \
+total elapsed time (in seconds).\n(Malouf 2002)"
+}], "Text",
+ CellChangeTimes->CompressedData["
+1:eJwd0nlIE3AUB3DxIPKoMMUOcvPIg+jaSmMeYxqKuUZNxVTU8ggPcCC5lWha
+mokZHkWlrJwjh9VcGloeHc50ypy4FMYw50HzKO8rzaP6fffH48P75z3e4RDH
+4yYaGxkZsUhAdYKeK4+cYWnNBRFQEFyeCD0cLYthmiulDMoydAYPBvnJYGN8
+vRyq28QKqHe2VkKxTqeG5V4+OnjApsqig2ibzvSEkr8qH5h5v5oJV7vmi6DY
+1qUW0p+O18OU8EE5nL/A7IaT1AtKqO7a+QabZ5MGYB5nXQP58/ULUCkuWIHt
+Z/3XoGPHKPsrcbqwnwN3N9kXwHx+3CPI3yp9BqnxARJ4fpAnhRUlHp/gVUa2
+dScxtzpkP1wvpRyGnJAPNLjoRveCvLqyVHgo7U86vLHTkANfSmXJI0QhLTAT
+ZkTScqAqnpsHizVz3DGiqOFXKNTErmz+IK4pzXfpMUfs6T2QStfaQSOrJCo8
+PsykQemQqwesfdPkY8iXXILh9qvhcPjEKTwa5lamJUOtqyjNUOeEGR8utbBH
+ponLKVmrsGrf+D/oUlZi/pNY2idwgos6hjPs7qE8PBM1w1KIRFLoO3nnC7Qx
+mRqAStc2qhcxidPHgL6nLkfBi+yT16D41vtEyOat34TD13ey4evGuMdQGLNY
+AWPpciGMEaRWwx63UYMBnkM1sJiiqINZirpm6N/9vAWq3Dfa4RR3qhNuS7KU
+hr4s/YihrydrAs7m5y1AUaHFOuQe6zKo5FSaeRNH4vutoA0l3B1O9mq9YdDH
+DT84d0QaBlXLramwQ96TDtkJ4tvQwexzDqRt1JTBBfsgKdRYq9/Bcyk6OdT+
+5s74EtMjU4yZ2Fe9RQO8e0/VDPl9/gNXiPbJbwchb8JrCD6QvPgOZW56WgRx
+zMSJDi8JTaWh0eR/90oUsLNhsxeS62hgUcH0BjQ1tduEW7KjFmHEQEarJfwP
+3S0g0g==
+  "]]
+},
+WindowSize->{1268, 1005},
+WindowMargins->{{59, Automatic}, {Automatic, 0}},
+FrontEndVersion->"10.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (July 6, \
+2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 41677, 1329, 2647, "Text"]
+}
+]
+*)
+
+(* End of internal cache information *)
