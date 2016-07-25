@@ -1,200 +1,156 @@
-import logging
-from collections import defaultdict
-from itertools import izip
-
-from numpy import exp, sum, argmax, unique, zeros, ones, abs, array, log, float, amax, outer
-from numpy.random.mtrand import shuffle
-from scipy.sparse.base import issparse
-from scipy.sparse.sputils import isdense
+from numpy import zeros, sum, ones, hstack, exp, argmax, log, kron, diag, outer, max
+from numpy.linalg import inv
+from numpy.random.mtrand import normal
 
 
-def _create_feature_cache(X, y, encoder, c):
-    classes = unique(y)
-    feat_counts = zeros(len(encoder) + 1)
-    feat_cache = defaultdict(int)
+def act(X, theta):
+    N, _ = X.shape
+    a = hstack([exp(X.dot(theta.T)), ones((N, 1))])
 
-    for i in range(len(X)):
-        for j in range(len(classes)):
-            f = encoder(X[i], classes[j])
-
-            f += [(len(encoder), c - sum([e[1] for e in f]))]
-
-            if classes[j] == y[i]:
-                for k, val in f:
-                    feat_counts[k] += val
-
-            feat_cache[(i, j)] = f
-
-    return feat_cache, feat_counts
+    return a
 
 
-def train_iis(model, X, y, iterations, tol):
-    data_counts = [sum([e[1] for e in f]) for f
-                   in [model.encoder(x, yy) for x, yy in zip(X, y)]]
-    c = max(data_counts)
+def prob(X, theta):
+    a = act(X, theta)
+    z = sum(a, axis=1)
+    z.shape = len(z), 1
+    p = a / z
 
-    model.N = float(len(X))
-    model.w = ones(len(model.encoder) + 1)
-
-    feat_cache, feat_counts = _create_feature_cache(X, y, model.encoder, c)
-
-    lepf_emp = log(feat_counts + 1)
-
-    it = 0
-
-    for it in range(iterations):
-        epf_est = zeros(len(model.encoder) + 1)
-
-        for i in range(len(X)):
-            f = [feat_cache[(i, j)] for j in range(len(model.classes))]
-            p = array([sum([model.w[l] * val for l, val in ff]) for ff in f])
-            p = p - (max(p) + log(sum(exp(p - max(p)))))
-
-            for j in range(len(model.classes)):
-                for k, val in feat_cache[(i, j)]:
-                    epf_est[k] += exp(p[j]) * val
-
-        new_w = model.w + (1. / c) * (lepf_emp - log(epf_est + 1))
-
-        if max(abs(new_w - model.w)) < tol:
-            model.w = new_w
-            break
-
-        model.w = new_w
-
-    logging.info("Training finished in %d iterations ..." % (it + 1))
-
-    return model
+    return p
 
 
-def train_gd(model, X, y, iterations=100, tol=.0001, alpha=.1, C=1.0):
-    model.K = len(unique(y))
-    model.N, model.P = X.shape
+def log_sum_exp(X):
+    m = max(X, axis=1)
+    m.shape = len(m), 1
 
-    model._init_weights()
-
-    it = 0
-
-    for it in range(iterations):
-        grad = zeros((model.K - 1, model.P))
-
-        for i in range(model.N):
-            x = zip(X[i,:].rows[0], X[i,:].data[0])
-            l_p = model.log_prob(X[i,:])
-
-            for k in range(model.K - 1):
-                for w_j, val in x:
-                    t = y[i,k] == model.classes[k]
-                    grad[k, w_j] += (t - exp(l_p[k]))*val
-
-        delta = alpha * grad / model.N
-
-        new_w = model.w + delta
-        new_w[:,1:] -= 2 * C * model.w[:,1:]
-
-        if amax(abs(new_w - model.w)) < tol:
-            model.w = new_w
-            break
-
-        model.w = new_w
-
-    logging.info("Training finished in %d iterations ..." % (it + 1))
-
-    return model
+    return m.flatten() + log(sum(exp(X - m), axis=1))
 
 
-def train_sgd_bin(model, X, y, iterations=100, tol=.0001, alpha=.1, C=1.0):
-    model.N, model.P = X.shape
-    model.K = len(unique(y))
-    model._init_weights()
+def log_prob(X, theta):
+    N, _ = X.shape
+    a = hstack([X.dot(theta.T), zeros((N, 1))])
+    z = log_sum_exp(a)
+    z.shape = len(z), 1
 
-    it = 0
-
-    for it in range(iterations):
-        indexes = range(model.N)
-        shuffle(indexes)
-
-        for i in indexes:
-            p = model.log_prob(X[i,:])
-
-            t = y[i,:] == model.classes[0:-1]
-            grad = outer(t - exp(p)[0:-1], X[i,:])
-
-            new_w = model.w + alpha * grad
-            new_w[1:] -= alpha * 2 * C * model.w[1:] / model.N
-
-            if amax(abs(new_w - model.w)) < tol:
-                model.w = new_w
-                break
-
-            model.w = new_w
-
-    logging.info("Training finished in %d iterations ..." % (it + 1))
+    return a - z
 
 
-    return model
+def h(X, theta):
+    N, _ = X.shape
+    C, _ = theta.shape
+
+    a = act(X, theta)
+    r = zeros((N, C + 1))
+
+    for i, j in enumerate(argmax(a, axis=1)):
+        r[i, j] = 1
+
+    return r
 
 
-class MaxEntModel(object):
-    def __init__(self, encoder=None):
-        self.encoder = encoder
-        self.classes = None
-        self.input_type = None
+def cost(X, y, theta, l=1.0):
+    N, _ = X.shape
 
-        self.w = None
-        self.K = None
-        self.N = None
-        self.P = None
+    return (sum(-y * log(prob(X, theta))) / N) + l/(2*N)*sum(theta[:,1:]**2)
 
-    def _init_weights(self):
-        self.w = zeros((self.K - 1, self.P))
+
+def grad(X, y, theta, l=1.0):
+    N, _ = X.shape
+    C, _ = theta.shape
+
+    err = prob(X, theta) - y
+    reg = (l/N) * hstack([zeros((C, 1)), theta[:,1:]])
+
+    result = zeros(theta.shape)
+
+    for i in range(C):
+        e = err[:, i]
+        e.shape = len(e), 1
+        result[i,:] = (sum(e * X, axis=0) / float(N)) + reg[i,:]
+
+    return result
+
+
+def hessian(X, theta, l=1.0):
+    N, _ = X.shape
+    C, P = theta.shape
+
+    mu = prob(X, theta)[:, 0:C]
+    reg = (l/N) * ones(theta.size)
+
+    for i in range(C):
+        reg[i*P] = 0.
+
+    reg = diag(reg)
+
+    result = zeros((theta.size, theta.size))
+
+    for i in xrange(N):
+        result += kron(diag(mu[i, 0:C]) - outer(mu[i, 0:C], mu[i, 0:C]), outer(X[i,:], X[i, :]))
+
+    return (result / float(N)) + reg
+
+
+def update(X, y, theta, rho=.05, l=1.0):
+    g = grad(X, y, theta, l=l)
+    update = theta - rho * inv(hessian(X, theta, l=l)).dot(g.flatten())
+    update.shape = theta.shape
+
+    return update
+
+
+def make_theta(c, p):
+    theta = normal(scale=.001, size=c * p)
+    theta.shape = c, p
+
+    return theta
+
+
+def train(X, y, max_iter=50, rho=.05, l=1.0, stats=None, verbose=True):
+    N, P = X.shape
+    _, C = y.shape
+
+    theta = make_theta(C - 1, P)
+    iter = 0
+    j = 0
+    new_j = cost(X, y, theta, l=l)
+
+    while abs(j - new_j) > .00001 and iter < max_iter:
+        if verbose:
+            print iter + 1, new_j
+
+        j = new_j
+        theta = update(X, y, theta, rho=rho, l=l)
+        new_j = cost(X, y, theta, l=l)
+        iter += 1
+
+    if stats is not None:
+        stats['iterations'] = iter
+
+    return theta
+
+
+class MaxentModel():
+    def __init__(self, C=1.0, rho=.05, max_iter=50):
+        self.C = C
+        self.rho = rho
+        self.max_iter = max_iter
+        self.theta = None
+        self.stats = {}
+
+    def train(self, X, y, verbose=True):
+        self.theta = train(X, y, l=self.C, rho=self.rho, max_iter=self.max_iter, stats=self.stats, verbose=verbose)
 
         return self
 
-    def log_prob(self, x):
-        if self.input_type == 'sparse':
-            x = zip(x.rows[0], x.data[0])
-            idx, vals = izip(*x)
-            p = array([self.w[i, list(idx)].dot(vals) for i in range(self.K - 1)] + [0.])
-        elif self.input_type == 'iter':
-            if self.encoder:
-                x = [self.encoder(x, y) for y in self.classes]
-                p = array([sum([self.w[l] * val for l, val in ff]) for ff in x])
-            else:
-                idx, vals = izip(*x)
-                p = array([self.w[i, list(idx)].dot(vals) for i in range(self.K - 1)] + [0.])
-        elif self.input_type == 'dense':
-            p = array(self.w.dot(x).tolist() + [0.])
-        else:
+    def predict(self, X):
+        if not self.theta:
             raise ValueError
 
-        p = p - (max(p) + log(sum(exp(p - max(p)))))
+        return h(X, self.theta)
 
-        return p
+    def log_prob(self, X):
+        return log_prob(X, self.theta)
 
-    def predict(self, x):
-        return self.classes[argmax(self.log_prob(x))]
-
-    def fit(self, X, y, method='iis', iterations=100, tol=.0001, **args):
-        self.classes = unique(y)
-
-        if issparse(X):
-            self.input_type = 'sparse'
-        elif isdense(X):
-            self.input_type = 'dense'
-        elif hasattr(X, '__iter__'):
-            self.input_type = 'iter'
-        else:
-            raise ValueError
-
-        if method == 'iis':
-            train_iis(self, X, y, iterations, tol)
-        elif method == 'gd':
-            train_gd(self, X, y, iterations, tol, **args)
-        elif method == 'sgd':
-            train_sgd_bin(self, X, y, iterations, tol, **args)
-        else:
-            raise ValueError("Unknown training method %s ..." % method)
-
-        return self
-
+    def replicate(self):
+        return MaxentModel(C=self.C, rho=self.rho, max_iter=self.max_iter)
