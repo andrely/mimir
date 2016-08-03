@@ -13,20 +13,12 @@ predict::usage = "";
 
 Begin["`Private`"];
 
-logSumExp[x_] :=
-  Module[{m = Max[x]},
-    m + Log[Total[Exp[x - m]]]]
-
-act[x_, \[Theta]_] := 
-  MapThread[Join, {Exp[x.\[Theta]\[Transpose]], ConstantArray[1,{Dimensions[x,1][[1]],1}]}] // N
-
-prob[x_, \[Theta]_] :=
-  Module[{a = act[x, \[Theta]]},
-    Module[{z = Total /@ a},
-      MapThread[Divide,{a, z}] // N]]
+prob[x_, \[Theta]_] := Exp@logprob[x, \[Theta]]
 
 logprob[x_, \[Theta]_] :=
-  # - logSumExp[#] & /@ (Append[(x.\[Theta]\[Transpose])\[Transpose], ConstantArray[0, Dimensions[x, 1]]]\[Transpose])
+  Module[{a = x.\[Theta]\[Transpose]},
+    a = Join[a\[Transpose], ConstantArray[0., {1, Dimensions[x][[1]]}]]\[Transpose];
+    MapThread[Subtract, {a, mimir`numerics`logSumExp[a]}]]
 
 cost[x_, y_, \[Theta]_, \[Lambda]_:1.0] :=
   Module[{n = Dimensions[x][[1]]},
