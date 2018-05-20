@@ -9,6 +9,7 @@ stratifiedSample::usage = ""
 mlclassEx4::usage = ""
 mlclassEx5::usage = ""
 iris::usage = ""
+cifar10DataSet::usage = "";
 
 Begin["`Private`"]
 
@@ -54,6 +55,20 @@ iris["x"] :=
 iris["y"] :=
   Part[#, 2]\[NonBreakingSpace]& /@ ExampleData[{"MachineLearning","FisherIris"},"Data"]
 
+readCifarData[file_] :=
+  Module[{data = Import[file, "Byte"], idx, images, labels},
+    idx = ((Table[i, {i, 1, Length@data / 3073}] - 1) * 3073) + 1;
+    labels = data[[idx]];
+    data = ArrayReshape[Delete[data, List /@ idx], {10000, 3, 32*32}];
+    images = Image[ArrayReshape[#\[Transpose], {32, 32, 3}] / 255, ColorSpace -> "RGB"] & /@ data;
+    MapThread[Rule, {images, labels}]]
+
+cifar10DataSet[path_] :=
+  Module[{trainFiles = FileNames[FileNameJoin[{path, "data_batch_*.bin"}]],
+          testFile = FileNameJoin[{path, "test_batch.bin"}],
+          meta = Import[FileNameJoin[{path, "batches.meta.txt"}], "Lines"]},
+    {Catenate[readCifarData /@ trainFiles], readCifarData[testFile], meta}]
+    
 End[]
 EndPackage[]
 
