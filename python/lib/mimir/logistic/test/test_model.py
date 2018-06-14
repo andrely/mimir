@@ -4,6 +4,7 @@ from numpy.ma import array
 from numpy.ma.testutils import assert_almost_equal
 
 from mimir.data.mlclass import ex4, ex5, make_poly
+from mimir.data.preprocessing import add_bias
 from mimir.logistic.model import prob, cost, grad, hessian, update, log_prob, LogisticModel
 
 
@@ -16,7 +17,7 @@ def test_prob():
 
 def test_log_prob():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([0.01, 0.01, 0.01])
 
     assert_almost_equal(log_prob(X, theta),
@@ -33,16 +34,17 @@ def test_log_prob():
 
 def test_cost():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     y = data['y']
     theta = array([.01, 0.01, 0.01])
 
     assert_almost_equal(cost(X, y, theta, l=0.), 0.7785, decimal=3)
+    assert_almost_equal(cost(X, y, array([-0.23201762, -6.826957, -13.900436]), l=0.), 651.61406, decimal=3)
 
 
 def test_cost_reg():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     y = data['y']
     theta = array([.01, .01, .01])
 
@@ -51,7 +53,7 @@ def test_cost_reg():
 
 def test_grad():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     y = data['y']
     theta = array([.01, .01, .01])
 
@@ -60,7 +62,7 @@ def test_grad():
 
 def test_grad_reg():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     y = data['y']
     theta = array([.01, .01, .01])
 
@@ -69,7 +71,7 @@ def test_grad_reg():
 
 def test_hessian():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([.1, .1, .1])
 
     assert_almost_equal(hessian(X, theta, l=0.), [[0.0001, 0.0022, 0.0044],
@@ -80,7 +82,7 @@ def test_hessian():
 
 def test_hessian_reg():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([.01, .01, .01])
 
     assert_almost_equal(hessian(X, theta, l=80.), [[0.1905, 7.1009, 12.7284],
@@ -91,7 +93,7 @@ def test_hessian_reg():
 
 def test_update():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     y = data['y']
     theta = array([.05, .05, .05])
 
@@ -100,7 +102,7 @@ def test_update():
 
 def test_train():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     y = data['y']
     model = LogisticModel(rho=1., C=0.)
     model.train(X, y, verbose=False)

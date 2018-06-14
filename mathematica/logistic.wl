@@ -2,17 +2,6 @@
 
 BeginPackage["mimir`logistic`"];
 
-prob::usage = "";
-logprob::usage = "";
-cost::usage = "";
-grad::usage = "";
-hessian::usage = "";
-updateNewton::usage = "";
-updateSteep::usage = "";
-updateSGD::usage = "";
-train::usage = "";
-predict::usage = "";
-
 Begin["`Private`"];
 
 a[x_, \[Theta]_] := Flatten[x.{\[Theta]}\[Transpose]]

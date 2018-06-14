@@ -117,7 +117,7 @@ def train(X, y, max_iter=50, rho=.05, l=1.0, stats=None, verbose=True):
 
     while abs(j - new_j) > .00001 and iter < max_iter:
         if verbose:
-            print iter + 1, new_j
+            print(iter + 1, new_j)
 
         j = new_j
         theta = update(X, y, theta, rho=rho, l=l)

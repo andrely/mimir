@@ -2,10 +2,6 @@
 
 BeginPackage["mimir`ovr`"]
 
-ovrClassifier::usage = ""
-train::usage = ""
-predict::usage = ""
-
 Begin["`Private`"]
 
 ovrClassifier[trainFunc_, logProbFunc_] :=

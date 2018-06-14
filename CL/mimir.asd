@@ -1,0 +1,16 @@
+(asdf:defsystem :mimir
+  :class :package-inferred-system
+  :depends-on (:cl-variates :cl-ppcre :split-sequence)
+  :components ((:file "mimir")
+	       (:file "metrics" :depends-on ("mimir"))
+	       (:file "linalg" :depends-on ("mimir"))
+               (:file "sparse" :depends-on ("linalg"))
+               (:file "stat" :depends-on ("linalg"))
+	       (:file "data" :depends-on ("linalg" "stat"))
+               (:file "text" :depends-on ("mimir"))
+	       (:file "optimizers" :depends-on ("linalg"))
+	       (:file "logistic" :depends-on ("linalg" "stat"))
+               (:file "naive-bayes" :depends-on ("linalg" "stat"))
+	       (:file "maxent" :depends-on ("linalg" "stat"))
+	       (:file "test-tools" :depends-on ("mimir"))
+	       (:file "ovr" :depends-on ("mimir"))))

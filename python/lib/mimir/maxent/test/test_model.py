@@ -4,6 +4,7 @@ from numpy.ma.testutils import assert_array_equal, assert_equal
 from numpy.testing.utils import assert_almost_equal
 
 from mimir.data.mlclass import ex4, ex5, make_poly
+from mimir.data.preprocessing import add_bias
 from mimir.maxent.model import prob, act, h, cost, grad, hessian, log_prob, update, MaxentModel
 
 
@@ -54,7 +55,7 @@ def test_p_mult():
                         decimal=3)
 
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([[.01, 0.01, 0.01]])
 
     assert_almost_equal(prob(X, theta)[:, 0], [0.7790, 0.7747, 0.8030, 0.7875, 0.7604, 0.7712, 0.7586, 0.7649,
@@ -104,7 +105,7 @@ def test_cost_mult():
     assert_almost_equal(cost(X, y, theta, l=0.), 1.793, decimal=3)
 
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([[.01, 0.01, 0.01]])
     y = vstack([data['y'], 1 - data['y']]).T
 
@@ -129,7 +130,7 @@ def test_grad_mult():
     assert_almost_equal(grad(X, y, theta, l=0.), [[0.0797, 0.0121, 0.2502], [0.0315, 0.2863, -0.2623]], decimal=3)
 
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([[.01, 0.01, 0.01]])
     y = vstack([data['y'], 1 - data['y']]).T
 
@@ -180,7 +181,7 @@ def test_hessian_mult():
                         decimal=3)
 
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([[.01, 0.01, 0.01]])
 
     assert_almost_equal(hessian(X, theta, l=0.),
@@ -198,7 +199,7 @@ def test_hessian_mult():
 
 def test_log_prob():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([[.01, 0.01, 0.01]])
 
     assert_almost_equal(log_prob(X, theta)[:, 0],
@@ -219,7 +220,7 @@ def test_log_prob():
 
 def test_update():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     theta = array([[.01, 0.01, 0.01]])
     y = vstack([data['y'], 1 - data['y']]).T
 
@@ -228,7 +229,7 @@ def test_update():
 
 def test_train():
     data = ex4()
-    X = data['x']
+    X = add_bias(data['x'])
     y = vstack([data['y'], 1 - data['y']]).T
     m = MaxentModel(C=0., rho=1.).train(X, y, verbose=False)
 

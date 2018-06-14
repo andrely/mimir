@@ -1,0 +1,11 @@
+(asdf:defsystem :mimir-test
+  :depends-on (:fiveam :mimir)
+  :components ((:file "test/mimir-test")
+	       (:file "test/data-test" :depends-on ("test/mimir-test"))
+	       (:file "test/linalg-test" :depends-on ("test/mimir-test"))
+               (:file "test/sparse-test" :depends-on ("test/mimir-test"))
+	       (:file "test/optimizers-test" :depends-on ("test/mimir-test"))
+	       (:file "test/logistic-test" :depends-on ("test/mimir-test"))
+	       (:file "test/maxent-test" :depends-on ("test/mimir-test"))
+               (:file "test/naive-bayes-test" :depends-on ("test/mimir-test"))
+	       (:file "test/ovr-test" :depends-on ("test/mimir-test"))))

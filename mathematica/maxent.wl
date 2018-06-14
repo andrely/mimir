@@ -2,15 +2,6 @@
 
 BeginPackage["mimir`maxent`"];
 
-logprob::usage = "";
-prob::usage = "";
-cost::usage = "";
-grad::usage = "";
-hessian::usage = "";
-update::usage = "";
-train::usage = "";
-predict::usage = "";
-
 Begin["`Private`"];
 
 prob[x_, \[Theta]_] := Exp@logprob[x, \[Theta]]
