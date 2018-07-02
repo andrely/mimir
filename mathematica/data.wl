@@ -7,15 +7,12 @@ addBiasTerm::usage = "";
 binarize::usage = "";
 normalize::usage = "";
 stratifiedSample::usage = "";
+mlclassEx4::usage = ""
+mlclassEx5::usage = ""
+iris::usage = ""
+cifar10DataSet::usage = "";
 
-checkOneHotArray::usage = "Checks if array is a valid one-hot array.";
-
-mlclassEx4::usage = "";
-mlclassEx5::usage = "";
-iris::usage = "";
-newsgroups::usage = "";
-
-Begin["`Private`"];
+Begin["`Private`"]
 
 makePoly[x_, n_:6] :=
   Flatten@Table[#[[1]]^i #[[2]]^(j-i),{i,0,n},{j,i,n}]& /@ x
@@ -49,7 +46,7 @@ stratifiedSplit[groups_, ratio_:.8] :=
         {pos[[;;idx]], pos[[idx;;]]}] &,
       c];
     Apply[Join,#]&/@(subSplits\[Transpose])]
-    
+
 checkOneHotArray[a_]:=
   ArrayDepth@a == 2 && Total[a, 2] == Length@a && Sort@DeleteDuplicates@Flatten@a == {0, 1}
 
@@ -76,9 +73,23 @@ iris["x"] :=
 iris["y"] :=
   Part[#, 2]\[NonBreakingSpace]& /@ ExampleData[{"MachineLearning","FisherIris"},"Data"]
 
+readCifarData[file_] :=
+  Module[{data = Import[file, "Byte"], idx, images, labels},
+    idx = ((Table[i, {i, 1, Length@data / 3073}] - 1) * 3073) + 1;
+    labels = data[[idx]];
+    data = ArrayReshape[Delete[data, List /@ idx], {10000, 3, 32*32}];
+    images = Image[ArrayReshape[#\[Transpose], {32, 32, 3}] / 255, ColorSpace -> "RGB"] & /@ data;
+    MapThread[Rule, {images, labels}]]
+
+cifar10DataSet[path_] :=
+  Module[{trainFiles = FileNames[FileNameJoin[{path, "data_batch_*.bin"}]],
+          testFile = FileNameJoin[{path, "test_batch.bin"}],
+          meta = Import[FileNameJoin[{path, "batches.meta.txt"}], "Lines"]},
+    {Catenate[readCifarData /@ trainFiles], readCifarData[testFile], meta}]
+
 removeHeader[art_]:=StringRiffle[StringExtract[art,"\n\n"->2;;All],"\n\n"]
 
-removeQuotes[art_] := 
+removeQuotes[art_] :=
   StringRiffle[Select[StringExtract[removeHeader[art], "\n" -> All],
     Not[StringContainsQ[#, RegularExpression["(writes in|writes:|wrote:|says:|said:|^In article|^Quoted from|^\||^>)"]]] &], "\n"]
 
